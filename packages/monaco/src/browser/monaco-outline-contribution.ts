@@ -128,7 +128,7 @@ export class MonacoOutlineContribution implements FrontendApplicationContributio
         let rangeBased = false;
         const ids = new Map();
         const roots: MonacoOutlineSymbolInformationNode[] = [];
-        const nodesByName = symbols.sort(this.orderByPosition).reduce((result, symbol) => {
+        const nodesByName = symbols.reduce((result, symbol) => {
             const node = this.createNode(uri, symbol, ids);
             if (symbol.children) {
                 roots.push(node);
@@ -229,22 +229,6 @@ export class MonacoOutlineContribution implements FrontendApplicationContributio
         SymbolKind.Interface, SymbolKind.Module,
         SymbolKind.Namespace, SymbolKind.Object,
         SymbolKind.Package, SymbolKind.Struct].indexOf(symbol.kind) !== -1;
-    }
-
-    protected orderByPosition(symbol: DocumentSymbol, symbol2: DocumentSymbol): number {
-        const startLineComparison = symbol.range.startLineNumber - symbol2.range.startLineNumber;
-        if (startLineComparison !== 0) {
-            return startLineComparison;
-        }
-        const startOffsetComparison = symbol.range.startColumn - symbol2.range.startColumn;
-        if (startOffsetComparison !== 0) {
-            return startOffsetComparison;
-        }
-        const endLineComparison = symbol.range.endLineNumber - symbol2.range.endLineNumber;
-        if (endLineComparison !== 0) {
-            return endLineComparison;
-        }
-        return symbol.range.endColumn - symbol2.range.endColumn;
     }
 
 }
